@@ -34,6 +34,10 @@ local function ConnectPlayer(Player)
         Arg3 = Split[3]
         Arg4 = Split[4]
 
+        if (Command("credits")) then
+            Chat("This script was made by Suno! (rscripts net/u/Suno)")
+        end
+
         if (Command("jump")) then
             Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) --> Use an alternative method to jump
         end
@@ -76,7 +80,7 @@ local function ConnectPlayer(Player)
             getgenv().CmdsActive = true
             task.wait(2)
 
-            Chat("-unfloat -jump -sit [message] -spin [speed] -unspin -cmds -float [height] -freeze -unfreeze -gravity [power]", "All")
+            Chat("-credits -unfloat -jump -sit [message] -spin [speed] -unspin -cmds -float [height] -freeze -unfreeze -gravity [power]", "All")
             
             getgenv().CmdsActive = false
         end
