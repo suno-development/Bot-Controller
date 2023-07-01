@@ -35,7 +35,7 @@ local function ConnectPlayer(Player)
         Arg4 = Split[4]
 
         if (Command("credits")) then
-            Chat("This script was made by Suno! (rscripts net/u/Suno)")
+            Chat("This script was made by Suno! (rscripts net/u/Suno)", "All")
         end
 
         if (Command("jump")) then
