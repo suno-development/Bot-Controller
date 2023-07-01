@@ -1,8 +1,3 @@
---> I do not really want to explain how this works
---> You can figure it out yourself,
---> But I have left comments around, so enjoy those I guess?
---> Made by Suno, in a rush because I want to do other things right now..
-
 --> Variables <--
 local Players = game.Players or game:GetService("Players")
 local ReplicatedStorage = game.ReplicatedStorage or game:GetService("ReplicatedStorage")
@@ -13,21 +8,21 @@ local Humanoid = Character.Humanoid or Character:WaitForChild("Humanoid")
 local HumanoidRootPart = Character.HumanoidRootPart or Character:WaitForChild("HumanoidRootPart")
 
 local Prefix = "-"
-local Version = "1"
+local Version = "2"
 
 --> Functions <--
-local function Chat(Message, Place) --> Allow for easier communications :)
+local function Chat(Message, Place)
     ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message, Place)
 end
 
 local function Command(Command)
-    return Arg1 == string.lower(Prefix..Command) --> Return command back to you
+    return Arg1 == string.lower(Prefix..Command)
 end
 
 --> Connections <--
 local function ConnectPlayer(Player)
     Player.Chatted:Connect(function(Message)
-        local Split = Message:split(" ") --> Break the message apart to allow spaces
+        local Split = Message:split(" ")
         
         Arg1 = Split[1]
         Arg2 = Split[2]
@@ -35,20 +30,33 @@ local function ConnectPlayer(Player)
         Arg4 = Split[4]
 
         if (Command("credits")) then
+            if (getgenv().CreditsActive) then
+                return print("Commands are already active")
+            end
+
+            getgenv().CreditsActive = true
+            task.wait(2)
+
             Chat("This script was made by Suno! (rscripts net/u/Suno)", "All")
+            getgenv().CreditsActive = false
         end
 
         if (Command("jump")) then
-            Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) --> Use an alternative method to jump
+            Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end
 
         if (Command("sit")) then
-            Humanoid.Sit = true --> Make the player have a seat
+            Humanoid.Sit = true
         end
 
         if (Command("spin")) then
+            local MaxSpeed = 50
             local Velocity = tonumber(Arg2)
 
+            if Velocity > MaxSpeed then
+                Velocity = MaxSpeed
+            end
+                
             for i,v in pairs(Humanoid.RootPart:GetChildren()) do
                 if v:IsA("BodyAngularVelocity") then
                     v:Destroy()
@@ -80,7 +88,7 @@ local function ConnectPlayer(Player)
             getgenv().CmdsActive = true
             task.wait(2)
 
-            Chat("-credits -unfloat -jump -sit [message] -spin [speed] -unspin -cmds -float [height] -freeze -unfreeze -gravity [power]", "All")
+            Chat("-credits -unfloat -jump -sit -spin [speed] -unspin -cmds -float [height] -freeze -unfreeze / -thaw -gravity [power]", "All")
             
             getgenv().CmdsActive = false
         end
@@ -109,7 +117,7 @@ local function ConnectPlayer(Player)
         end
 
         if (Command("gravity")) then
-            local MaxGravity = 20 --> This is so you can not float up forever.
+            local MaxGravity = 20
             local Gravity = tonumber(Arg2)
 
             if Gravity < MaxGravity then
@@ -121,19 +129,15 @@ local function ConnectPlayer(Player)
     end)
 end
 
-Players.PlayerAdded:Connect(function(Player) --> When a new person joins, add them to list
+Players.PlayerAdded:Connect(function(Player)
     ConnectPlayer(Player)
 end)
 
-for _,Player in ipairs(Players:GetPlayers()) do --> Connect current users to list of whitelisted
+for _,Player in ipairs(Players:GetPlayers()) do
     ConnectPlayer(Player)
 end
 
-if game.PlaceId == 8737602449 then
-  while true do
-    Chat("-cmds or -commands to see all commands! :)", "All")
-    Humanoid:ChangeState("Jumping")
-    
-    wait(50)
-  end
+while true do
+    Chat("Need commands? -cmds to see all commands.", "All")
+    wait(30)
 end
